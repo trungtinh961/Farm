@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "839344031022",
+    "firebase_url": "https://farm-5f2f5.firebaseio.com",
+    "project_id": "farm-5f2f5",
+    "storage_bucket": "farm-5f2f5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839344031022:android:36b24779a1d00aca3966bf",
+        "android_client_info": {
+          "package_name": "com.example.farm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839344031022-rr1r7kqss8s47oke7rrhiqk2qk9s3g9j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9TGCJfDuIPkgMjEuMQWaRJz6L-PH9Lnk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839344031022-rr1r7kqss8s47oke7rrhiqk2qk9s3g9j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
