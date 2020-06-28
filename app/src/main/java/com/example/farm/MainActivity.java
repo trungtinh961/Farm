@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         mAuth   = FirebaseAuth.getInstance();
 
         /* Start MQTT */
-        startMQTT();
+        //startMQTT();
         
     }
 
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             case R.id.navigation_notification:
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, graphFragment).commit();
-                toolbar.setTitle("Thông báo");
+                toolbar.setTitle("Biểu đồ");
                 result = true;
                 break;
         }

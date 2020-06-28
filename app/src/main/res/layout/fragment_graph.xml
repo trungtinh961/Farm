@@ -11,13 +11,13 @@
     android:padding="15dp">
 
     <TextView
-        android:textSize="20sp"
-        android:gravity="center"
-        android:visibility="visible"
+        android:id="@+id/dataReceive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="ĐỒ THỊ NHIỆT ĐỘ - ĐỘ ẨM"
-        android:id="@+id/dataReceive"
+        android:gravity="center"
+        android:text="BIỂU ĐỒ NHIỆT ĐỘ - ĐỘ ẨM"
+        android:textSize="20sp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

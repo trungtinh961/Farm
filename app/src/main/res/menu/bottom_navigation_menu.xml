@@ -14,7 +14,7 @@
 
     <item
         android:id="@+id/navigation_notification"
-        android:icon="@drawable/notification"
-        android:title="Thông báo" />
+        android:icon="@drawable/graph"
+        android:title="Biểu đồ" />
 
 </menu>

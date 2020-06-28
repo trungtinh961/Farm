@@ -46,7 +46,7 @@ public class SettingFragment extends Fragment {
         sbSpeakerValue = view.findViewById(R.id.sbSpeaker);
         btnSetting = view.findViewById(R.id.btnSetting);
 
-        startMQTT();
+        //startMQTT();
 
         sbSpeakerValue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

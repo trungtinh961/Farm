@@ -1,6 +1,8 @@
 package com.example.farm.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +30,8 @@ import org.json.JSONObject;
 public class GraphFragment extends Fragment {
 
     GraphView graphTemperature, graphHumidity;
-    private LineGraphSeries<DataPoint> series;
+    private LineGraphSeries<DataPoint> seriesTemparature, seriesHumidity;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
     private int lastX = 0;
     int temparature = 0;
     int humidity = 0;
@@ -47,14 +50,24 @@ public class GraphFragment extends Fragment {
         graphTemperature.getViewport().setMaxY(100);
         graphTemperature.getViewport().setYAxisBoundsManual(true);
         graphTemperature.getViewport().setScrollable(true);
+        graphTemperature.getViewport().setBackgroundColor(0xffcccccc);
+
+        graphTemperature.setTitle("BIỂU ĐỒ NHIỆT ĐỘ");
 
         graphHumidity.getViewport().setMinY(0);
         graphHumidity.getViewport().setMaxY(100);
         graphHumidity.getViewport().setYAxisBoundsManual(true);
         graphHumidity.getViewport().setScrollable(true);
+        graphHumidity.getViewport().setBackgroundColor(0xffcccccc);
+        graphHumidity.setTitle("BIỂU ĐỒ ĐỘ ẨM");
 
-        series = new LineGraphSeries<DataPoint>();
-        graphTemperature.addSeries(series);
+        seriesTemparature = new LineGraphSeries<DataPoint>();
+        seriesHumidity = new LineGraphSeries<DataPoint>();
+        graphTemperature.addSeries(seriesTemparature);
+        graphHumidity.addSeries(seriesHumidity);
+
+        seriesTemparature.appendData(new DataPoint(0,0), true, 10);
+        seriesHumidity.appendData(new DataPoint(0,0), true, 10);
 
         return view;
     }
@@ -78,8 +91,11 @@ public class GraphFragment extends Fragment {
                     temparature = Integer.parseInt(valuesArray.getString(0));
                     humidity = Integer.parseInt(valuesArray.getString(1));
 
-                    series.appendData(new DataPoint(lastX++,temparature), true, 10 );
+                    seriesTemparature.appendData(new DataPoint(lastX++,temparature), true, 10);
+                    seriesHumidity.appendData(new DataPoint(lastX++,humidity), true, 10);
 
+                    graphTemperature.onDataChanged(true,true);
+                    graphHumidity.onDataChanged(true,true);
                 }
             }
 

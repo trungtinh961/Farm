@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
         txtTempValue = (TextView) view.findViewById(R.id.tempValue);
         txtHumiValue = (TextView) view.findViewById(R.id.humiValue);
 
-        startMQTT();
+        //startMQTT();
 
         return view;
     }
