@@ -24,6 +24,7 @@
         android:background="#304BDA"
         app:itemIconTint="@drawable/item_selected"
         app:itemTextColor="@drawable/item_selected"
+        app:labelVisibilityMode="auto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
