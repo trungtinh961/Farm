@@ -23,12 +23,12 @@ public class MQTTHelper {
     final String serverUri = "tcp://52.163.115.85:1883";   //server giả lập
 
     final String clientId = "App_22";
-    final String subscriptionTopic = "Topic/TempHumi";
+//    final String subscriptionTopic = "Topic/TempHumi";
 
     final String username = "BKvm";
     final String password = "Hcmut_CSE_2020";
 
-    public MQTTHelper(Context context){
+    public MQTTHelper(Context context, String subscriptionTopic){
         mqttAndroidClient = new MqttAndroidClient(context, serverUri, clientId);
         mqttAndroidClient.setCallback(new MqttCallbackExtended() {
             @Override
@@ -42,21 +42,21 @@ public class MQTTHelper {
 
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                Log.w("Mqtt", mqttMessage.toString());
+                //Log.w("Mqtt", mqttMessage.toString());
             }
 
             @Override
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
             }
         });
-        connect();
+        connect(subscriptionTopic);
     }
 
     public void setCallback(MqttCallbackExtended callback) {
         mqttAndroidClient.setCallback(callback);
     }
 
-    private void connect(){
+    private void connect(final String subscriptionTopic){
         MqttConnectOptions mqttConnectOptions = new MqttConnectOptions();
         mqttConnectOptions.setAutomaticReconnect(true);
         mqttConnectOptions.setCleanSession(false);
@@ -72,7 +72,7 @@ public class MQTTHelper {
                     disconnectedBufferOptions.setPersistBuffer(false);
                     disconnectedBufferOptions.setDeleteOldestMessages(false);
                     mqttAndroidClient.setBufferOpts(disconnectedBufferOptions);
-                    subscribeToTopic();
+                    subscribeToTopic(subscriptionTopic);
                 }
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
@@ -83,7 +83,7 @@ public class MQTTHelper {
             ex.printStackTrace();
         }
     }
-    private void subscribeToTopic() {
+    private void subscribeToTopic(String subscriptionTopic) {
         try {
             mqttAndroidClient.subscribe(subscriptionTopic, 0, null, new IMqttActionListener() {
                 @Override

@@ -4,25 +4,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.farm.ui.HomeFragment;
 import com.example.farm.ui.LoginActivity;
-import com.example.farm.ui.NotificationFragment;
+import com.example.farm.ui.GraphFragment;
 import com.example.farm.ui.SettingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -36,11 +33,14 @@ import java.nio.charset.Charset;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    private Handler mHandler = new Handler();
+
+    private static final String CHANNEL_ID = "chanel1";
     private ActionBar toolbar;
     FirebaseAuth mAuth;
-    private  String userID;
     BottomNavigationView bottomNavigationView;
+    private  int startSpeakerValue = 40;
+    int temparature = 0;
+    int humidity = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,25 +56,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
-
-
         /* Get user ID */
         mAuth   = FirebaseAuth.getInstance();
 
         /* Start MQTT */
         startMQTT();
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        final HomeFragment homeFragment = (HomeFragment) fragmentManager.findFragmentById(R.id.fragment_home);
-//        mHandler.postDelayed(new Runnable() {
-//            public void run() {
-//                homeFragment.txtTempValue.setText(String.valueOf(30));
-//            }
-//        }, 5000);
-
         
     }
-
-
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -83,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     HomeFragment fragmentHome = new HomeFragment();
     SettingFragment settingFragment = new SettingFragment();
-    NotificationFragment notificationFragment = new NotificationFragment();
+    GraphFragment graphFragment = new GraphFragment();
 
     /* Creat Navigation Menu */
     @Override
@@ -91,6 +79,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         boolean result = false;
         switch (menuItem.getItemId()) {
             case R.id.navigation_home:
+                Bundle bundle = new Bundle();
+                bundle.putString("value",String.valueOf(temparature));
+                fragmentHome.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, fragmentHome).commit();
                 toolbar.setTitle("Trang chủ");
                 result = true;
@@ -103,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
 
             case R.id.navigation_notification:
-                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, notificationFragment).commit();
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, graphFragment).commit();
                 toolbar.setTitle("Thông báo");
                 result = true;
                 break;
@@ -114,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return result;
     }
 
-    /* Create menu reload */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.custom_menu,menu);
@@ -133,12 +123,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return super.onOptionsItemSelected(item);
     }
 
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "";
+            String description = "";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     /* MQTT Class */
 
     MQTTHelper mqttHelper;
     public void startMQTT(){
-
-        mqttHelper = new MQTTHelper(getApplicationContext());
+        mqttHelper = new MQTTHelper(getApplicationContext(),"Topic/TempHumi");
         mqttHelper.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean b, String s) {
@@ -151,16 +152,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                final String message = mqttMessage.toString().substring(1, mqttMessage.toString().length() - 1);
-                Log.w("Debug", message);
-                JSONObject jsonObject = new JSONObject(message);
-                String device_id = jsonObject.getString("device_id");
-                JSONArray valuesArray = jsonObject.getJSONArray("values");
-                int temparature = Integer.parseInt(valuesArray.getString(0));
-                int humidity = Integer.parseInt(valuesArray.getString(1));
-                Log.w("Showdata",device_id + ": temp = " + temparature + ", humi = " + humidity);
-            }
+                if (topic.equals("Topic/TempHumi")) {
+                    final String message = mqttMessage.toString().substring(1, mqttMessage.toString().length() - 1);
+                    Log.w("Main", message);
+                    JSONObject jsonObject = new JSONObject(message);
+                    JSONArray valuesArray = jsonObject.getJSONArray("values");
+                    temparature = Integer.parseInt(valuesArray.getString(0));
+                    humidity = Integer.parseInt(valuesArray.getString(1));
 
+                    /* Auto turn on Speaker and send notification */
+                    if (temparature > startSpeakerValue) {
+                        sendDataToMQTT("Speaker","1","5000");
+                        Toast.makeText(MainActivity.this, "Chú ý nhiệt độ bất thường! " + String.valueOf(temparature) + " oC", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
             @Override
             public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
 
@@ -187,5 +193,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
     }
 
+    public void setSpeakerSetting(int speakerSetting) {
+        this.startSpeakerValue = speakerSetting;
+    }
 
 }

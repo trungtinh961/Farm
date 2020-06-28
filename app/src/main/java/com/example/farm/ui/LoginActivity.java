@@ -3,6 +3,8 @@ package com.example.farm.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -166,4 +168,5 @@ public class LoginActivity extends AppCompatActivity {
         mAuth           = FirebaseAuth.getInstance();
         mDatabase       = FirebaseDatabase.getInstance().getReference().child("Users");
     }
+
 }

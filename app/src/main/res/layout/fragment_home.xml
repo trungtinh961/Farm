@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_home"
-    android:background="@drawable/background">
+    android:background="@drawable/background"
+    android:padding="20dp">
 
 
     <TextView
@@ -49,39 +50,4 @@
         app:layout_constraintStart_toEndOf="@+id/humidity"
         app:layout_constraintTop_toBottomOf="@+id/tempValue" />
 
-    <SeekBar
-        android:id="@+id/seekBarSpeaker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="5000"
-        android:min="0"
-        android:paddingTop="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:paddingTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Giá trị speaker: "
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/humidity" />
-
-    <TextView
-        android:id="@+id/speakerValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="10dp"
-        android:text="0"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.157"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/humiValue" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,18 +5,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.farm.MQTTHelper;
-import com.example.farm.MainActivity;
 import com.example.farm.R;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -27,24 +25,40 @@ import org.json.JSONObject;
 /**
  * Created by Trung Tinh on 6/20/2020.
  */
-public class HomeFragment extends Fragment {
+public class GraphFragment extends Fragment {
 
-    public TextView txtTempValue, txtHumiValue;
+    GraphView graphTemperature, graphHumidity;
+    private LineGraphSeries<DataPoint> series;
+    private int lastX = 0;
     int temparature = 0;
     int humidity = 0;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_home, container, false);
-
-        txtTempValue = (TextView) view.findViewById(R.id.tempValue);
-        txtHumiValue = (TextView) view.findViewById(R.id.humiValue);
+        View view =  inflater.inflate(R.layout.fragment_graph, container, false);
 
         startMQTT();
 
+        graphTemperature = (GraphView) view.findViewById(R.id.graphTemperature);
+        graphHumidity = (GraphView) view.findViewById(R.id.graphHumidity);
+
+        graphTemperature.getViewport().setMinY(0);
+        graphTemperature.getViewport().setMaxY(100);
+        graphTemperature.getViewport().setYAxisBoundsManual(true);
+        graphTemperature.getViewport().setScrollable(true);
+
+        graphHumidity.getViewport().setMinY(0);
+        graphHumidity.getViewport().setMaxY(100);
+        graphHumidity.getViewport().setYAxisBoundsManual(true);
+        graphHumidity.getViewport().setScrollable(true);
+
+        series = new LineGraphSeries<DataPoint>();
+        graphTemperature.addSeries(series);
+
         return view;
     }
+
 
     MQTTHelper mqttHelper;
     public void startMQTT(){
@@ -58,15 +72,13 @@ public class HomeFragment extends Fragment {
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
                 if (topic.equals("Topic/TempHumi")) {
                     final String message = mqttMessage.toString().substring(1, mqttMessage.toString().length() - 1);
-                    Log.w("Home", message);
+                    Log.w("Noti", message);
                     JSONObject jsonObject = new JSONObject(message);
-                    String device_id = jsonObject.getString("device_id");
                     JSONArray valuesArray = jsonObject.getJSONArray("values");
                     temparature = Integer.parseInt(valuesArray.getString(0));
                     humidity = Integer.parseInt(valuesArray.getString(1));
 
-                    txtHumiValue.setText(String.valueOf(humidity));
-                    txtTempValue.setText(String.valueOf(temparature));
+                    series.appendData(new DataPoint(lastX++,temparature), true, 10 );
 
                 }
             }
@@ -79,4 +91,5 @@ public class HomeFragment extends Fragment {
         });
 
     }
+
 }
