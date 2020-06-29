@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.example.farm.MQTTHelper;
 import com.example.farm.MainActivity;
 import com.example.farm.R;
+import com.github.lzyzsd.circleprogress.ArcProgress;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -29,7 +30,8 @@ import org.json.JSONObject;
  */
 public class HomeFragment extends Fragment {
 
-    public TextView txtTempValue, txtHumiValue;
+    public ArcProgress tTempValue, tHumiValue;
+////    public Button btnTest;
     int temparature = 0;
     int humidity = 0;
 
@@ -38,10 +40,11 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_home, container, false);
 
-        txtTempValue = (TextView) view.findViewById(R.id.tempValue);
-        txtHumiValue = (TextView) view.findViewById(R.id.humiValue);
-
-        //startMQTT();
+        tTempValue = (ArcProgress) view.findViewById(R.id.arc_progress1);
+        tTempValue.setSuffixText("oC");
+        tHumiValue = (ArcProgress) view.findViewById(R.id.arc_progress2);
+//        btnTest= (Button) view.findViewById(R.id.button);
+        startMQTT();
 
         return view;
     }
@@ -64,9 +67,11 @@ public class HomeFragment extends Fragment {
                     JSONArray valuesArray = jsonObject.getJSONArray("values");
                     temparature = Integer.parseInt(valuesArray.getString(0));
                     humidity = Integer.parseInt(valuesArray.getString(1));
-
-                    txtHumiValue.setText(String.valueOf(humidity));
-                    txtTempValue.setText(String.valueOf(temparature));
+                    tTempValue.setProgress(temparature);
+                    tHumiValue.setProgress(humidity);
+//
+//                    txtHumiValue.setText(String.valueOf(humidity));
+//                    txtTempValue.setText(String.valueOf(temparature));
 
                 }
             }
