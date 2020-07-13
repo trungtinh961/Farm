@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fragment_setting"
-    android:background="@drawable/background"
+    android:background="@drawable/backgroundnew"
     android:padding="20dp">
+
 
     <TextView
         android:id="@+id/textView2"
@@ -21,6 +22,7 @@
 
     <SeekBar
         android:id="@+id/sbSpeaker"
+        android:layout_below="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -33,6 +35,7 @@
 
     <TextView
         android:id="@+id/txtspeakerValue"
+        android:layout_below="@+id/sbSpeaker"
         android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,22 +47,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-    <EditText
-        android:gravity="center"
-        android:layout_marginTop="25dp"
-        android:id="@+id/edtTempSetting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:textSize="20sp"
-        android:hint="Nhiệt độ"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+<!--    <EditText-->
+<!--        android:gravity="center"-->
+<!--        android:layout_marginTop="25dp"-->
+<!--        android:id="@+id/edtTempSetting"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:ems="10"-->
+<!--        android:textSize="20sp"-->
+<!--        android:hint="Nhiệt độ"-->
+<!--        android:inputType="textPersonName"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/textView5" />-->
 
     <TextView
         android:id="@+id/textView5"
+        android:layout_below="@+id/txtspeakerValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -69,14 +73,51 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sbSpeaker" />
 
-    <Button
-        android:id="@+id/btnSetting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Thiết đặt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtTempSetting" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.akaita.android.circularseekbar.CircularSeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="37dp"
+        android:layout_below="@+id/textView5"
+        android:layout_centerHorizontal="true"
+        app:enabled="true"
+        app:innerCircleColor="#e0f7e9"
+        app:min="0"
+        app:max="100"
+        app:progress="0"
+        app:progressTextSize="26"
+        app:progressTextColor="@android:color/black"
+        app:ringColor="@color/colorAccent"
+        app:ringWidth="0.5"
+        app:showIndicator="true"
+        app:showInnerCircle="true"
+        app:speedMultiplier="2"
+        tools:ignore="MissingConstraints" />
+
+    <com.zhouyou.view.seekbar.SignSeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        app:ssb_section_text_position="bottom_sides"
+        app:ssb_show_progress_in_float="false"
+        app:ssb_show_section_mark="false"
+        app:ssb_show_section_text="true"
+        app:ssb_show_sign="true"
+        app:ssb_show_thumb_text="false"
+        app:ssb_sign_arrow_height="5dp"
+        app:ssb_sign_arrow_width="10dp"
+        app:ssb_sign_border_color="@color/colorPrimary"
+        app:ssb_sign_border_size="1dp"
+        app:ssb_sign_color="@color/colorPrimary"
+        app:ssb_sign_show_border="true"/>
+<!--    <Button-->
+<!--        android:id="@+id/btnSetting"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="50dp"-->
+<!--        android:text="Thiết đặt"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.498"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/edtTempSetting" />-->
+</RelativeLayout>

@@ -41,41 +41,41 @@ public class SettingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_setting, container, false);
 
-        txtSpeakerValue = view.findViewById(R.id.txtspeakerValue);
-        edtTempSetting = view.findViewById(R.id.edtTempSetting);
-        sbSpeakerValue = view.findViewById(R.id.sbSpeaker);
-        btnSetting = view.findViewById(R.id.btnSetting);
-
-        //startMQTT();
-
-        sbSpeakerValue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                txtSpeakerValue.setText(String.valueOf(sbSpeakerValue.getProgress()));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(sbSpeakerValue.getProgress()));
-            }
-        });
-
-        btnSetting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!edtTempSetting.getText().toString().isEmpty()) {
-                    ((MainActivity)getActivity()).setSpeakerSetting(Integer.parseInt(edtTempSetting.getText().toString()));
-                    Toast.makeText(getActivity(), "Thiết lập thành công.", Toast.LENGTH_SHORT).show();
-                    edtTempSetting.setText("");
-                }
-                else Toast.makeText(getActivity(), "Vui lòng nhập nhiệt độ cảnh báo.", Toast.LENGTH_SHORT).show();
-            }
-        });
-
+//        txtSpeakerValue = view.findViewById(R.id.txtspeakerValue);
+//        edtTempSetting = view.findViewById(R.id.edtTempSetting);
+//        sbSpeakerValue = view.findViewById(R.id.sbSpeaker);
+//        btnSetting = view.findViewById(R.id.btnSetting);
+//
+//        //startMQTT();
+//
+//        sbSpeakerValue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                txtSpeakerValue.setText(String.valueOf(sbSpeakerValue.getProgress()));
+//            }
+//
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(sbSpeakerValue.getProgress()));
+//            }
+//        });
+//
+//        btnSetting.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (!edtTempSetting.getText().toString().isEmpty()) {
+//                    ((MainActivity)getActivity()).setSpeakerSetting(Integer.parseInt(edtTempSetting.getText().toString()));
+//                    Toast.makeText(getActivity(), "Thiết lập thành công.", Toast.LENGTH_SHORT).show();
+//                    edtTempSetting.setText("");
+//                }
+//                else Toast.makeText(getActivity(), "Vui lòng nhập nhiệt độ cảnh báo.", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
         return view;
     }
 
