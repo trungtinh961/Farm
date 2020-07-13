@@ -40,12 +40,20 @@ import java.util.Locale;
 public class SettingFragment extends Fragment {
     private static final String TAG = "MyActivity";
     float AutoTemp=-1;
+    SignSeekBar edtSpeakerSetting;
     TextView txtSpeakerValue;
     //    EditText edtTempSetting;
 //    SeekBar sbSpeakerValue;
 //    Button btnSetting;
     int speakerValue;
-
+    public void capnhat(float x){
+        if (AutoTemp!=-1){
+            if (x>AutoTemp){
+                edtSpeakerSetting.setProgress(5000);
+                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(5000));
+            }
+        }
+    }
     @SuppressLint("ResourceAsColor")
     @Nullable
     @Override
@@ -53,7 +61,7 @@ public class SettingFragment extends Fragment {
         final View view =  inflater.inflate(R.layout.fragment_setting, container, false);
 
 //        txtSpeakerValue = view.findViewById(R.id.txtspeakerValue);
-        final SignSeekBar edtSpeakerSetting = view.findViewById(R.id.seek_barcustom);
+        edtSpeakerSetting = view.findViewById(R.id.seek_barcustom);
 //        edtSpeakerSetting.setProgress(2000);
 //        edtSpeakerSetting.getConfigBuilder().thumbColor(ContextCompat.getColor(getContext(), android.R.color.black));
 //        edtSpeakerSetting.setBackgroundColor(android.R.color.black);
@@ -80,13 +88,14 @@ public class SettingFragment extends Fragment {
 //                seekBar.setProgress(seekBar.getProgress());
             }
         });
+
         seekBar.setOnCircularSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             @Override
             public void onProgressChanged(CircularSeekBar seekBar, float progress, boolean fromUser) {
 //                seekBar.setProgressTextFormat(new DecimalFormat("###,###,##0.00"));
 //                seekBar.setProgressText(seekBar.getProgress());
                 edtSpeakerSetting.setEnabled(false);
-                AutoTemp=progress;
+//                AutoTemp=progress;
 //                edtSpeakerSetting.getConfigBuilder().trackColor(R.color.colorPrimaryDark).build();
 //                edtSpeakerSetting.getConfigBuilder().secondTrackColor(R.color.colorPrimaryDark).build();
 //                edtSpeakerSetting.getConfigBuilder().thumbColor(R.color.colorPrimaryDark).build();
@@ -108,7 +117,7 @@ public class SettingFragment extends Fragment {
             @Override
             public void onStopTrackingTouch(CircularSeekBar seekBar) {
                 Snackbar.make(seekBar, "Đã tắt điều khiển speaker thủ công và đặt tự động điều khiển đến nhiệt độ: "+seekBar.getProgress()+"oC",Snackbar.LENGTH_SHORT*5).show();
-
+                AutoTemp=seekBar.getProgress();
             }
         });
 //            edtSpeakerSetting.setEnabled(false);
@@ -117,7 +126,7 @@ public class SettingFragment extends Fragment {
 //        sbSpeakerValue = view.findViewById(R.id.sbSpeaker);
 //        btnSetting = view.findViewById(R.id.btnSetting);
 //
-//        startMQTT();
+        startMQTT();
 //
 //        sbSpeakerValue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 //            @Override
@@ -151,7 +160,7 @@ public class SettingFragment extends Fragment {
             @Override
             public void getProgressOnActionUp(SignSeekBar signSeekBar, int progress, float progressFloat) {
                 String s = String.format(Locale.CHINA, "onActionUp int:%d, float:%.1f", progress, progressFloat);
-//                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(progress));
+                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(progress));
                 Snackbar.make(view, "Đã thiết lập speaker với công suất: " +progress,Snackbar.LENGTH_SHORT*3).show();
 //                progressText.setText(s);
             }
@@ -197,8 +206,8 @@ public class SettingFragment extends Fragment {
                     String device_id = jsonObject.getString("device_id");
                     JSONArray valuesArray = jsonObject.getJSONArray("values");
                     speakerValue = Integer.parseInt(valuesArray.getString(1));
-                    txtSpeakerValue.setText(String.valueOf(speakerValue));
-
+//                    txtSpeakerValue.setText(String.valueOf(speakerValue));
+                    edtSpeakerSetting.setProgress(speakerValue);
                 }
             }
 

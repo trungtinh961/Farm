@@ -33,7 +33,7 @@ import java.nio.charset.Charset;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-
+//    public float AutoTemp=-1;
     private static final String CHANNEL_ID = "chanel1";
     private ActionBar toolbar;
     FirebaseAuth mAuth;
@@ -41,6 +41,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private  int startSpeakerValue = 40;
     int temparature = 0;
     int humidity = 0;
+//    public void set(float AT){
+//        AutoTemp=AT;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         mAuth   = FirebaseAuth.getInstance();
 
         /* Start MQTT */
-        //startMQTT();
+        startMQTT();
         
     }
 
@@ -72,6 +75,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     HomeFragment fragmentHome = new HomeFragment();
     SettingFragment settingFragment = new SettingFragment();
     GraphFragment graphFragment = new GraphFragment();
+
+    public void capnhatnhietdo(int x){
+        settingFragment.capnhat(x);
+    }
 
     /* Creat Navigation Menu */
     @Override
@@ -159,7 +166,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     JSONArray valuesArray = jsonObject.getJSONArray("values");
                     temparature = Integer.parseInt(valuesArray.getString(0));
                     humidity = Integer.parseInt(valuesArray.getString(1));
-
+                    capnhatnhietdo(temparature);
+//                    if(AutoTemp!=-1&&temparature>AutoTemp){
+//                        sendDataToMQTT("Speaker","1","5000");
+//                        Toast.makeText(MainActivity.this, "Chú ý nhiệt độ bất thường! " + String.valueOf(temparature) + " oC", Toast.LENGTH_SHORT).show();
+//                    }
                     /* Auto turn on Speaker and send notification */
                     if (temparature > startSpeakerValue) {
                         sendDataToMQTT("Speaker","1","5000");
