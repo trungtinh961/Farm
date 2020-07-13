@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:fontFamily="serif"
+        android:fontFamily="sans-serif-medium"
         android:textColor="#000000"
         android:text="BIỂU ĐỒ NHIỆT ĐỘ - ĐỘ ẨM"
         android:textSize="25sp"
@@ -26,16 +26,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.jjoe64.graphview.GraphView
+        android:alpha="0.6"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_weight="5"
         android:layout_marginTop="30dp"
         android:id="@+id/graphTemperature" />
 
+
     <com.jjoe64.graphview.GraphView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_weight="5"
+        android:alpha="0.6"
         android:layout_marginTop="30dp"
         android:id="@+id/graphHumidity"/>
 

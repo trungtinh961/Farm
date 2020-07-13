@@ -21,7 +21,7 @@
         android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#304BDA"
+        android:background="#FFC107"
         app:itemIconTint="@drawable/item_selected"
         app:itemTextColor="@drawable/item_selected"
         app:labelVisibilityMode="auto"

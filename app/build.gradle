@@ -31,6 +31,11 @@ android {
 }
 
 dependencies {
+    implementation 'com.ramotion.fluidslider:fluid-slider:0.3.1'
+    compile 'com.zhouyou:signseekbar:1.0.6'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.akaita.android:circular-seek-bar:1.0'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.jjoe64:graphview:4.2.2'
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.1.0'
