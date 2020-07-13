@@ -50,7 +50,7 @@ public class GraphFragment extends Fragment {
         graphTemperature.getViewport().setMaxY(100);
         graphTemperature.getViewport().setYAxisBoundsManual(true);
         graphTemperature.getViewport().setScrollable(true);
-        graphTemperature.getViewport().setBackgroundColor(0xffcccccc);
+        graphTemperature.getViewport().setBackgroundColor(getResources().getColor(R.color.graph));
 
         graphTemperature.setTitle("BIỂU ĐỒ NHIỆT ĐỘ");
 
@@ -58,7 +58,7 @@ public class GraphFragment extends Fragment {
         graphHumidity.getViewport().setMaxY(100);
         graphHumidity.getViewport().setYAxisBoundsManual(true);
         graphHumidity.getViewport().setScrollable(true);
-        graphHumidity.getViewport().setBackgroundColor(0xffcccccc);
+        graphHumidity.getViewport().setBackgroundColor(getResources().getColor(R.color.graph));
         graphHumidity.setTitle("BIỂU ĐỒ ĐỘ ẨM");
 
         seriesTemparature = new LineGraphSeries<DataPoint>();
