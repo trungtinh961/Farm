@@ -43,7 +43,7 @@ public class SettingFragment extends Fragment {
     float realtimeTemp=-1;
     SignSeekBar edtSpeakerSetting;
     TextView txtSpeakerValue;
-    //    EditText edtTempSetting;
+        EditText edtTempSetting;
 //    SeekBar sbSpeakerValue;
 //    Button btnSetting;
     int speakerValue;
