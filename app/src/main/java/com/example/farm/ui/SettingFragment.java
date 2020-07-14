@@ -40,26 +40,12 @@ import java.util.Locale;
 public class SettingFragment extends Fragment {
     private static final String TAG = "MyActivity";
     float AutoTemp=-1;
-    float realtimeTemp=-1;
-    SignSeekBar edtSpeakerSetting;
     TextView txtSpeakerValue;
-        EditText edtTempSetting;
+//    EditText edtTempSetting;
 //    SeekBar sbSpeakerValue;
 //    Button btnSetting;
     int speakerValue;
-    public void capnhat(float x){
-        realtimeTemp=x;
-        if (AutoTemp!=-1&&x!=-1){
-            if (x>=AutoTemp){
-                edtSpeakerSetting.setProgress(5000);
-                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(5000));
-            }
-            else {
-                edtSpeakerSetting.setProgress(0);
-                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(0));
-            }
-        }
-    }
+
     @SuppressLint("ResourceAsColor")
     @Nullable
     @Override
@@ -67,7 +53,7 @@ public class SettingFragment extends Fragment {
         final View view =  inflater.inflate(R.layout.fragment_setting, container, false);
 
 //        txtSpeakerValue = view.findViewById(R.id.txtspeakerValue);
-        edtSpeakerSetting = view.findViewById(R.id.seek_barcustom);
+        final SignSeekBar edtSpeakerSetting = view.findViewById(R.id.seek_barcustom);
 //        edtSpeakerSetting.setProgress(2000);
 //        edtSpeakerSetting.getConfigBuilder().thumbColor(ContextCompat.getColor(getContext(), android.R.color.black));
 //        edtSpeakerSetting.setBackgroundColor(android.R.color.black);
@@ -80,7 +66,7 @@ public class SettingFragment extends Fragment {
             @Override
             public void onCenterClicked(CircularSeekBar seekBar, float progress) {
 //                seekBar.setProgressTextFormat(new StringFormat());
-                Snackbar.make(seekBar, "Đã tắt tự động điều khiển nhiệt độ và bật điều khiển speaker thủ công!!!",Snackbar.LENGTH_SHORT*5).show();
+                Snackbar.make(seekBar, "Đã tắt tự động điều khiển nhiệt độ và bật điều khiển quạt thủ công!!!",Snackbar.LENGTH_SHORT*5).show();
                 seekBar.setRingColor(Color.BLACK);
                 seekBar.setProgress(0);
 
@@ -94,21 +80,18 @@ public class SettingFragment extends Fragment {
 //                seekBar.setProgress(seekBar.getProgress());
             }
         });
-
         seekBar.setOnCircularSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             @Override
             public void onProgressChanged(CircularSeekBar seekBar, float progress, boolean fromUser) {
 //                seekBar.setProgressTextFormat(new DecimalFormat("###,###,##0.00"));
 //                seekBar.setProgressText(seekBar.getProgress());
                 edtSpeakerSetting.setEnabled(false);
-//                AutoTemp=progress;
+                AutoTemp=progress;
 //                edtSpeakerSetting.getConfigBuilder().trackColor(R.color.colorPrimaryDark).build();
 //                edtSpeakerSetting.getConfigBuilder().secondTrackColor(R.color.colorPrimaryDark).build();
 //                edtSpeakerSetting.getConfigBuilder().thumbColor(R.color.colorPrimaryDark).build();
-                if (progress==0) {
-                    edtSpeakerSetting.setEnabled(true);
+                if (progress==0)
                     seekBar.setRingColor(Color.BLACK);
-                }
                 else if (progress<33)
                     seekBar.setRingColor(Color.GREEN);
                 else if(progress<66)
@@ -124,9 +107,8 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(CircularSeekBar seekBar) {
-                Snackbar.make(seekBar, "Đã tắt điều khiển speaker thủ công và đặt tự động điều khiển đến nhiệt độ: "+seekBar.getProgress()+"oC",Snackbar.LENGTH_SHORT*5).show();
-                AutoTemp=seekBar.getProgress();
-                capnhat(realtimeTemp);
+                Snackbar.make(seekBar, "Đã tắt điều khiển quạt thủ công và đặt tự động điều khiển đến nhiệt độ: "+seekBar.getProgress()+"oC",Snackbar.LENGTH_SHORT*5).show();
+
             }
         });
 //            edtSpeakerSetting.setEnabled(false);
@@ -135,7 +117,7 @@ public class SettingFragment extends Fragment {
 //        sbSpeakerValue = view.findViewById(R.id.sbSpeaker);
 //        btnSetting = view.findViewById(R.id.btnSetting);
 //
-        startMQTT();
+//        startMQTT();
 //
 //        sbSpeakerValue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 //            @Override
@@ -154,7 +136,7 @@ public class SettingFragment extends Fragment {
 //        });
 
         edtSpeakerSetting.setOnProgressChangedListener(new SignSeekBar.OnProgressChangedListener() {
-            //            @Override
+//            @Override
 //            public void onStopTrackingTouch(SignSeekBar seekBar) {
 //                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(sbSpeakerValue.getProgress()));
 //            }
@@ -169,8 +151,8 @@ public class SettingFragment extends Fragment {
             @Override
             public void getProgressOnActionUp(SignSeekBar signSeekBar, int progress, float progressFloat) {
                 String s = String.format(Locale.CHINA, "onActionUp int:%d, float:%.1f", progress, progressFloat);
-                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(progress));
-                Snackbar.make(view, "Đã thiết lập speaker với công suất: " +progress,Snackbar.LENGTH_SHORT*3).show();
+//                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(progress));
+                Snackbar.make(view, "Đã thiết lập quạt với tốc độ: " +progress,Snackbar.LENGTH_SHORT*3).show();
 //                progressText.setText(s);
             }
 
@@ -215,8 +197,8 @@ public class SettingFragment extends Fragment {
                     String device_id = jsonObject.getString("device_id");
                     JSONArray valuesArray = jsonObject.getJSONArray("values");
                     speakerValue = Integer.parseInt(valuesArray.getString(1));
-//                    txtSpeakerValue.setText(String.valueOf(speakerValue));
-                    edtSpeakerSetting.setProgress(speakerValue);
+                    txtSpeakerValue.setText(String.valueOf(speakerValue));
+
                 }
             }
 
