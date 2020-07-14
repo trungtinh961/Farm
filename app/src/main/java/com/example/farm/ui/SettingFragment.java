@@ -44,8 +44,8 @@ public class SettingFragment extends Fragment {
     SignSeekBar edtSpeakerSetting;
     TextView txtSpeakerValue;
     //    EditText edtTempSetting;
-//    SeekBar sbSpeakerValue;
-//    Button btnSetting;
+    SeekBar sbSpeakerValue;
+    Button btnSetting;
     int speakerValue;
     public void capnhat(float x){
         realtimeTemp=x;
