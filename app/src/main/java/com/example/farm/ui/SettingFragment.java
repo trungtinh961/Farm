@@ -40,17 +40,23 @@ import java.util.Locale;
 public class SettingFragment extends Fragment {
     private static final String TAG = "MyActivity";
     float AutoTemp=-1;
+    float realtimeTemp=-1;
     SignSeekBar edtSpeakerSetting;
     TextView txtSpeakerValue;
-    //    EditText edtTempSetting;
+        EditText edtTempSetting;
 //    SeekBar sbSpeakerValue;
 //    Button btnSetting;
     int speakerValue;
     public void capnhat(float x){
-        if (AutoTemp!=-1){
-            if (x>AutoTemp){
+        realtimeTemp=x;
+        if (AutoTemp!=-1&&x!=-1){
+            if (x>=AutoTemp){
                 edtSpeakerSetting.setProgress(5000);
                 ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(5000));
+            }
+            else {
+                edtSpeakerSetting.setProgress(0);
+                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(0));
             }
         }
     }
@@ -99,8 +105,10 @@ public class SettingFragment extends Fragment {
 //                edtSpeakerSetting.getConfigBuilder().trackColor(R.color.colorPrimaryDark).build();
 //                edtSpeakerSetting.getConfigBuilder().secondTrackColor(R.color.colorPrimaryDark).build();
 //                edtSpeakerSetting.getConfigBuilder().thumbColor(R.color.colorPrimaryDark).build();
-                if (progress==0)
+                if (progress==0) {
+                    edtSpeakerSetting.setEnabled(true);
                     seekBar.setRingColor(Color.BLACK);
+                }
                 else if (progress<33)
                     seekBar.setRingColor(Color.GREEN);
                 else if(progress<66)
@@ -118,6 +126,7 @@ public class SettingFragment extends Fragment {
             public void onStopTrackingTouch(CircularSeekBar seekBar) {
                 Snackbar.make(seekBar, "Đã tắt điều khiển speaker thủ công và đặt tự động điều khiển đến nhiệt độ: "+seekBar.getProgress()+"oC",Snackbar.LENGTH_SHORT*5).show();
                 AutoTemp=seekBar.getProgress();
+                capnhat(realtimeTemp);
             }
         });
 //            edtSpeakerSetting.setEnabled(false);
