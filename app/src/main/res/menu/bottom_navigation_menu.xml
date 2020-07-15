@@ -17,4 +17,8 @@
         android:icon="@drawable/graph"
         android:title="Biểu đồ" />
 
+    <item
+        android:id="@+id/navigation_history"
+        android:icon="@drawable/history"
+        android:title="Lịch sử" />
 </menu>

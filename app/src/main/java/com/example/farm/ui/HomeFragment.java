@@ -5,17 +5,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.farm.MQTTHelper;
-import com.example.farm.MainActivity;
 import com.example.farm.R;
 import com.github.lzyzsd.circleprogress.ArcProgress;
 
@@ -43,7 +38,6 @@ public class HomeFragment extends Fragment {
         tTempValue = (ArcProgress) view.findViewById(R.id.arc_progress1);
         tTempValue.setSuffixText("oC");
         tHumiValue = (ArcProgress) view.findViewById(R.id.arc_progress2);
-//        btnTest= (Button) view.findViewById(R.id.button);
         startMQTT();
 
         return view;
@@ -69,10 +63,6 @@ public class HomeFragment extends Fragment {
                     humidity = Integer.parseInt(valuesArray.getString(1));
                     tTempValue.setProgress(temparature);
                     tHumiValue.setProgress(humidity);
-//
-//                    txtHumiValue.setText(String.valueOf(humidity));
-//                    txtTempValue.setText(String.valueOf(temparature));
-
                 }
             }
 

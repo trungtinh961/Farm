@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.farm.ui.HistoryFragment;
 import com.example.farm.ui.HomeFragment;
 import com.example.farm.ui.LoginActivity;
 import com.example.farm.ui.GraphFragment;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     HomeFragment fragmentHome = new HomeFragment();
     SettingFragment settingFragment = new SettingFragment();
     GraphFragment graphFragment = new GraphFragment();
+    HistoryFragment historyFragment = new HistoryFragment();
 
     public void capnhatnhietdo(int x){
         settingFragment.capnhat(x);
@@ -105,6 +107,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 toolbar.setTitle("Biểu đồ");
                 result = true;
                 break;
+
+            case R.id.navigation_history:
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fade_in, R.anim.fade_out).replace(R.id.container, historyFragment).commit();
+                toolbar.setTitle("Lịch sử");
+                result = true;
+                break;
         }
         if (!result) {
             result = true;
@@ -130,17 +138,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return super.onOptionsItemSelected(item);
     }
 
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = "";
-            String description = "";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
 
     /* MQTT Class */
 
@@ -167,10 +164,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     temparature = Integer.parseInt(valuesArray.getString(0));
                     humidity = Integer.parseInt(valuesArray.getString(1));
                     capnhatnhietdo(temparature);
-//                    if(AutoTemp!=-1&&temparature>AutoTemp){
-//                        sendDataToMQTT("Speaker","1","5000");
-//                        Toast.makeText(MainActivity.this, "Chú ý nhiệt độ bất thường! " + String.valueOf(temparature) + " oC", Toast.LENGTH_SHORT).show();
-//                    }
                     /* Auto turn on Speaker and send notification */
                     if (temparature > startSpeakerValue) {
                         sendDataToMQTT("Speaker","1","5000");
