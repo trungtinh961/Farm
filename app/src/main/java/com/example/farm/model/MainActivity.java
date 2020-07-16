@@ -5,6 +5,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,10 @@ import com.example.farm.ui.GraphFragment;
 import com.example.farm.ui.SettingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -30,17 +35,20 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-//    public float AutoTemp=-1;
-    private static final String CHANNEL_ID = "chanel1";
     private ActionBar toolbar;
     FirebaseAuth mAuth;
     BottomNavigationView bottomNavigationView;
     private  int startSpeakerValue = 40;
     int temparature = 0;
     int humidity = 0;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference mRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         /* Start MQTT */
         startMQTT();
-        
     }
 
     @Override
@@ -162,8 +169,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     capnhatnhietdo(temparature);
                     /* Auto turn on Speaker and send notification */
                     if (temparature > startSpeakerValue) {
+                        Calendar calendar = Calendar.getInstance();
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
+                        Alert alert = new Alert(temparature,format.format(calendar.getTime())+"\n");
                         sendDataToMQTT("Speaker","1","5000");
                         Toast.makeText(MainActivity.this, "Chú ý nhiệt độ bất thường! " + String.valueOf(temparature) + " oC", Toast.LENGTH_SHORT).show();
+
+                        /* Send alert to firebase */
+
+                        mRef = db.collection("alert").document();
+                        mRef.set(alert);
+
                     }
                 }
             }
@@ -197,4 +213,5 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         this.startSpeakerValue = speakerSetting;
     }
 
+    public int getStartSpeakerValue() { return startSpeakerValue; }
 }

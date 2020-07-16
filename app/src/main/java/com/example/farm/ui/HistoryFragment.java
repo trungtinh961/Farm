@@ -1,6 +1,5 @@
 package com.example.farm.ui;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.farm.model.Alert;
 import com.example.farm.adapter.AlertAdapter;
 import com.example.farm.R;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * Created by Trung Tinh on 7/15/2020.
@@ -27,6 +29,8 @@ import java.util.Calendar;
 public class HistoryFragment extends Fragment {
 
     public View view;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference mRef = db.collection("alert");
 
     @Nullable
     @Override
@@ -46,15 +50,15 @@ public class HistoryFragment extends Fragment {
 
         final ArrayList<Alert> alertArrayList = new ArrayList<>();
 
-        Calendar calendar = Calendar.getInstance();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
-        String time = format.format(calendar.getTime());
-
-
-        alertArrayList.add(new Alert(20,format.format(calendar.getTime())+"\n"));
-        alertArrayList.add(new Alert(20,format.format(calendar.getTime())+"\n"));
-        alertArrayList.add(new Alert(20,format.format(calendar.getTime())+"\n"));
-        alertArrayList.add(new Alert(20,format.format(calendar.getTime())+"\n"));
+        mRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
+                    Alert alert = documentSnapshot.toObject(Alert.class);
+                    alertArrayList.add(0,alert);
+                }
+            }
+        });
 
         AlertAdapter alertAdapter = new AlertAdapter(alertArrayList,getContext());
         rvHistory.setAdapter(alertAdapter);

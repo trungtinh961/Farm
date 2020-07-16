@@ -62,13 +62,8 @@ public class SettingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View view =  inflater.inflate(R.layout.fragment_setting, container, false);
 
-//        txtSpeakerValue = view.findViewById(R.id.txtspeakerValue);
         edtSpeakerSetting = view.findViewById(R.id.seek_barcustom);
-//        edtSpeakerSetting.setProgress(2000);
-//        edtSpeakerSetting.getConfigBuilder().thumbColor(ContextCompat.getColor(getContext(), android.R.color.black));
-//        edtSpeakerSetting.setBackgroundColor(android.R.color.black);
 
-//        edtSpeakerSetting.getConfigBuilder().signTextSize(20);
         CircularSeekBar seekBar=view.findViewById(R.id.seekbar);
         seekBar.setProgressTextFormat(new DecimalFormat("###,###,##0.00"));
         seekBar.setRingColor(Color.BLACK);
@@ -79,28 +74,14 @@ public class SettingFragment extends Fragment {
                 Snackbar.make(seekBar, "Đã tắt tự động điều khiển nhiệt độ và bật điều khiển speaker thủ công!!!",Snackbar.LENGTH_SHORT*5).show();
                 seekBar.setRingColor(Color.BLACK);
                 seekBar.setProgress(0);
-
-//                edtSpeakerSetting.getConfigBuilder().trackColor(R.color.colorAccent).build();
-////                edtSpeakerSetting.getConfigBuilder().secondTrackColor(R.color.colorAccent).build();
-//                edtSpeakerSetting.getConfigBuilder().thumbColor(R.color.colorAccent).build();
                 edtSpeakerSetting.setEnabled(true);
-//                seekBar.setProgress(seekBar.getProgress());
-//                seekBar.setProgressText("OFF");
-//                seekBar.setProgressTextFormat(new DecimalFormat("###,###,##0.00"));
-//                seekBar.setProgress(seekBar.getProgress());
             }
         });
 
         seekBar.setOnCircularSeekBarChangeListener(new CircularSeekBar.OnCircularSeekBarChangeListener() {
             @Override
             public void onProgressChanged(CircularSeekBar seekBar, float progress, boolean fromUser) {
-//                seekBar.setProgressTextFormat(new DecimalFormat("###,###,##0.00"));
-//                seekBar.setProgressText(seekBar.getProgress());
                 edtSpeakerSetting.setEnabled(false);
-//                AutoTemp=progress;
-//                edtSpeakerSetting.getConfigBuilder().trackColor(R.color.colorPrimaryDark).build();
-//                edtSpeakerSetting.getConfigBuilder().secondTrackColor(R.color.colorPrimaryDark).build();
-//                edtSpeakerSetting.getConfigBuilder().thumbColor(R.color.colorPrimaryDark).build();
                 if (progress==0) {
                     edtSpeakerSetting.setEnabled(true);
                     seekBar.setRingColor(Color.BLACK);
@@ -125,38 +106,13 @@ public class SettingFragment extends Fragment {
                 capnhat(realtimeTemp);
             }
         });
-//            edtSpeakerSetting.setEnabled(false);
-//            edtSpeakerSetting.getConfigBuilder().trackColor(-7829368);
-//            edtSpeakerSetting.getConfigBuilder().secondTrackColor(-7829368);
-//        sbSpeakerValue = view.findViewById(R.id.sbSpeaker);
-//        btnSetting = view.findViewById(R.id.btnSetting);
-//
+
         startMQTT();
-//
-//        sbSpeakerValue.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                txtSpeakerValue.setText(String.valueOf(sbSpeakerValue.getProgress()));
-//            }
-//
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//            }
-//
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(sbSpeakerValue.getProgress()));
-//            }
-//        });
 
         edtSpeakerSetting.setOnProgressChangedListener(new SignSeekBar.OnProgressChangedListener() {
-            //            @Override
-//            public void onStopTrackingTouch(SignSeekBar seekBar) {
-//                ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(sbSpeakerValue.getProgress()));
-//            }
+
             @Override
             public void onProgressChanged(SignSeekBar signSeekBar, int progress, float progressFloat,boolean fromUser) {
-                //fromUser 表示是否是用户触发 是否是用户touch事件产生
                 String s = String.format(Locale.CHINA, "onChanged int:%d, float:%.1f", progress, progressFloat);
 //                Snackbar.make(view, s,Snackbar.LENGTH_SHORT).show();
 //                progressText.setText(s);
@@ -167,30 +123,14 @@ public class SettingFragment extends Fragment {
                 String s = String.format(Locale.CHINA, "onActionUp int:%d, float:%.1f", progress, progressFloat);
                 ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(progress));
                 Snackbar.make(view, "Đã thiết lập speaker với công suất: " +progress,Snackbar.LENGTH_SHORT*3).show();
-//                progressText.setText(s);
             }
 
             @Override
             public void getProgressOnFinally(SignSeekBar signSeekBar, int progress, float progressFloat,boolean fromUser) {
                 Log.i(TAG, "abc: "+progress);
                 String s = String.format(Locale.CHINA, "onFinally int:%d, float:%.1f", progress, progressFloat);
-//                progressText.setText(s + getContext().getResources().getStringArray(R.array.labels)[progress]);
-//                Snackbar.make(view, s,Snackbar.LENGTH_SHORT).show();
             }
         });
-//
-//        btnSetting.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (!edtTempSetting.getText().toString().isEmpty()) {
-//                    ((MainActivity)getActivity()).setSpeakerSetting(Integer.parseInt(edtTempSetting.getText().toString()));
-//                    Toast.makeText(getActivity(), "Thiết lập thành công.", Toast.LENGTH_SHORT).show();
-//                    edtTempSetting.setText("");
-//                }
-//                else Toast.makeText(getActivity(), "Vui lòng nhập nhiệt độ cảnh báo.", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
         return view;
     }
 
@@ -208,10 +148,8 @@ public class SettingFragment extends Fragment {
                     final String message = mqttMessage.toString().substring(1, mqttMessage.toString().length() - 1);
                     Log.w("Debug", message);
                     JSONObject jsonObject = new JSONObject(message);
-                    String device_id = jsonObject.getString("device_id");
                     JSONArray valuesArray = jsonObject.getJSONArray("values");
                     speakerValue = Integer.parseInt(valuesArray.getString(1));
-//                    txtSpeakerValue.setText(String.valueOf(speakerValue));
                     edtSpeakerSetting.setProgress(speakerValue);
                 }
             }
