@@ -31,7 +31,6 @@ public class GraphFragment extends Fragment {
 
     GraphView graphTemperature, graphHumidity;
     private LineGraphSeries<DataPoint> seriesTemparature, seriesHumidity;
-    private Handler mHandler = new Handler(Looper.getMainLooper());
     private int lastX = 0;
     int temparature = 0;
     int humidity = 0;
