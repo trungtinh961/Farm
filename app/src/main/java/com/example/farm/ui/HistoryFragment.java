@@ -56,9 +56,20 @@ public class HistoryFragment extends Fragment {
         mRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                int i = 0; int milisecond = 0;
                 for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
-                    Alert alert = documentSnapshot.toObject(Alert.class);
-                    alertArrayList.add(0, alert);
+                    if (i > 0){
+                        if (Math.abs(Integer.parseInt(documentSnapshot.getId().substring(documentSnapshot.getId().length()-6)) - milisecond) >= 10000) {
+                            Alert alert = documentSnapshot.toObject(Alert.class);
+                            alertArrayList.add(0, alert);
+                        }
+                    }
+                    else {
+                        Alert alert = documentSnapshot.toObject(Alert.class);
+                        alertArrayList.add(0, alert);
+                    }
+                    milisecond = Integer.parseInt(documentSnapshot.getId().substring(documentSnapshot.getId().length()-6));
+                    i++;
                 }
                 AlertAdapter alertAdapter = new AlertAdapter(alertArrayList, getContext());
                 rvHistory.setAdapter(alertAdapter);
