@@ -17,6 +17,8 @@ import com.example.farm.model.MQTTHelper;
 import com.example.farm.R;
 import com.example.farm.model.MainActivity;
 import com.github.lzyzsd.circleprogress.ArcProgress;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -36,6 +38,8 @@ public class HomeFragment extends Fragment {
 ////    public Button btnTest;
     int temparature = 0;
     int humidity = 0;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference mRef;
 
     @Nullable
     @Override
@@ -69,7 +73,6 @@ public class HomeFragment extends Fragment {
                     humidity = Integer.parseInt(valuesArray.getString(1));
                     tTempValue.setProgress(temparature);
                     tHumiValue.setProgress(humidity);
-
                 }
             }
 
@@ -79,6 +82,5 @@ public class HomeFragment extends Fragment {
             @Override
             public void connectComplete(boolean reconnect, String serverURI) {}
         });
-
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +17,7 @@ import com.example.farm.model.Alert;
 import com.example.farm.adapter.AlertAdapter;
 import com.example.farm.R;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -41,26 +43,28 @@ public class HistoryFragment extends Fragment {
     }
 
     private void initView() {
-        RecyclerView rvHistory = (RecyclerView) view.findViewById(R.id.recyclerviewHistory);
+        final RecyclerView rvHistory = (RecyclerView) view.findViewById(R.id.recyclerviewHistory);
         rvHistory.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
         rvHistory.setLayoutManager(layoutManager);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(),layoutManager.getOrientation());
         rvHistory.addItemDecoration(dividerItemDecoration);
 
-        final ArrayList<Alert> alertArrayList = new ArrayList<>();
+        //---------------------------------------------------------------
 
+        final ArrayList<Alert> alertArrayList = new ArrayList<>();
         mRef.get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for (QueryDocumentSnapshot documentSnapshot: queryDocumentSnapshots) {
+                for (QueryDocumentSnapshot documentSnapshot : queryDocumentSnapshots) {
                     Alert alert = documentSnapshot.toObject(Alert.class);
-                    alertArrayList.add(0,alert);
+                    alertArrayList.add(0, alert);
                 }
+                AlertAdapter alertAdapter = new AlertAdapter(alertArrayList, getContext());
+                rvHistory.setAdapter(alertAdapter);
             }
         });
 
-        AlertAdapter alertAdapter = new AlertAdapter(alertArrayList,getContext());
-        rvHistory.setAdapter(alertAdapter);
+
     }
 }

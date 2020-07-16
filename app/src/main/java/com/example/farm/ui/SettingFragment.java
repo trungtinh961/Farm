@@ -160,6 +160,5 @@ public class SettingFragment extends Fragment {
             @Override
             public void connectComplete(boolean reconnect, String serverURI) {}
         });
-
     }
 }

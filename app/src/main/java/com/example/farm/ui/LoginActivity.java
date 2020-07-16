@@ -54,16 +54,6 @@ public class LoginActivity extends AppCompatActivity {
         toolbar = getSupportActionBar();
         toolbar.setTitle("Đăng nhập");
 
-//        /* Chuyển activity SignIn -> SignUp*/
-//        tvSignUp.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(SignIn.this, SignUp.class);
-//                startActivity(intent);
-//            }
-//        });
-
-
         /* Chuyển activity SignIn -> Main nếu đăng nhập thành công*/
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override

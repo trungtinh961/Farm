@@ -176,8 +176,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                         Toast.makeText(MainActivity.this, "Chú ý nhiệt độ bất thường! " + String.valueOf(temparature) + " oC", Toast.LENGTH_SHORT).show();
 
                         /* Send alert to firebase */
-
-                        mRef = db.collection("alert").document();
+                        mRef = db.collection("alert").document(calendar.getTimeInMillis()+"");
                         mRef.set(alert);
 
                     }
@@ -191,27 +190,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     public void sendDataToMQTT(final String ID, final String value1, final String value2){
-
         MqttMessage msg = new MqttMessage();
         msg.setId(1234);
         msg.setQos(0);
         msg.setRetained(true);
-
         String data = "[{\"device_id\":\"Speaker\", \"values\":[\"" + value1 + "\",\"" + value2 + "\"]}]";
         byte[] b = data.getBytes(Charset.forName("UTF-8"));
         msg.setPayload(b);
-
         try {
             mqttHelper.mqttAndroidClient.publish("Topic/Speaker", msg);
             Log.e("publish","[{\"device_id\":\"" + ID + "\", \"values\":[\"" + value1 + "\",\"" + value2 + "\"]}]");
-
         }catch (MqttException e){
         }
     }
 
-    public void setSpeakerSetting(int speakerSetting) {
-        this.startSpeakerValue = speakerSetting;
-    }
-
-    public int getStartSpeakerValue() { return startSpeakerValue; }
 }

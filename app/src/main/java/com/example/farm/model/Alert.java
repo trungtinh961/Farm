@@ -7,6 +7,8 @@ public class Alert {
     public int temparature;
     public String time;
 
+    public Alert() {}
+
     public Alert(int temparature, String time) {
         this.temparature = temparature;
         this.time = time;

@@ -37,7 +37,7 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtTemparature.append(String.valueOf(alertArrayList.get(position).getTemparature()));
+        holder.txtTemparature.setText("Nhiệt độ: " + String.valueOf(alertArrayList.get(position).getTemparature()));
         holder.txtTime.setText(alertArrayList.get(position).getTime());
     }
 
