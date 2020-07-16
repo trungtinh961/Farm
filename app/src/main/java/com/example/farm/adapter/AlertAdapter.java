@@ -1,4 +1,4 @@
-package com.example.farm;
+package com.example.farm.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.farm.model.Alert;
+import com.example.farm.R;
 
 import java.util.ArrayList;
 
@@ -34,7 +37,7 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.txtTemparature.setText(String.valueOf(alertArrayList.get(position).getTemparature()));
+        holder.txtTemparature.append(String.valueOf(alertArrayList.get(position).getTemparature()));
         holder.txtTime.setText(alertArrayList.get(position).getTime());
     }
 

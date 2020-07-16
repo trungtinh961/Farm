@@ -1,4 +1,4 @@
-package com.example.farm;
+package com.example.farm.model;
 
 /**
  * Created by Trung Tinh on 7/15/2020.

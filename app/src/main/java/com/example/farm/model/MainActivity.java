@@ -1,12 +1,10 @@
-package com.example.farm;
+package com.example.farm.model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.farm.R;
 import com.example.farm.ui.HistoryFragment;
 import com.example.farm.ui.HomeFragment;
 import com.example.farm.ui.LoginActivity;
@@ -42,9 +41,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private  int startSpeakerValue = 40;
     int temparature = 0;
     int humidity = 0;
-//    public void set(float AT){
-//        AutoTemp=AT;
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

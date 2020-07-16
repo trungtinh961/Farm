@@ -1,4 +1,4 @@
-package com.example.farm;
+package com.example.farm.model;
 
 import android.content.Context;
 import android.util.Log;
@@ -42,7 +42,7 @@ public class MQTTHelper {
 
             @Override
             public void messageArrived(String topic, MqttMessage mqttMessage) throws Exception {
-                //Log.w("Mqtt", mqttMessage.toString());
+
             }
 
             @Override
