@@ -32,9 +32,13 @@ android {
 
 dependencies {
     implementation 'com.ramotion.fluidslider:fluid-slider:0.3.1'
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation "androidx.recyclerview:recyclerview-selection:1.1.0-rc01"
     compile 'com.zhouyou:signseekbar:1.0.6'
+    //noinspection GradleCompatible
     implementation 'com.android.support:design:26.1.0'
     implementation 'com.akaita.android:circular-seek-bar:1.0'
+    //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.jjoe64:graphview:4.2.2'
     implementation fileTree(dir: "libs", include: ["*.jar"])
