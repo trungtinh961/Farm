@@ -9,16 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.akaita.android.circularseekbar.CircularSeekBar;
+import com.example.farm.model.Alert;
 import com.example.farm.model.MQTTHelper;
 import com.example.farm.model.MainActivity;
 import com.example.farm.R;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.zhouyou.view.seekbar.SignSeekBar;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
@@ -28,6 +32,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 /**
@@ -38,21 +44,29 @@ public class SettingFragment extends Fragment {
     float AutoTemp=-1;
     float realtimeTemp=-1;
     SignSeekBar edtSpeakerSetting;
-    TextView txtSpeakerValue;
-    //    EditText edtTempSetting;
-//    SeekBar sbSpeakerValue;
-//    Button btnSetting;
     int speakerValue;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference mRef;
+
     public void capnhat(float x){
-        realtimeTemp=x;
-        if (AutoTemp!=-1&&x!=-1){
-            if (x>=AutoTemp){
+        realtimeTemp = x;
+        if (AutoTemp != -1 && x != -1){
+            if (x >= AutoTemp){
                 edtSpeakerSetting.setProgress(5000);
                 ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(5000));
+                Toast.makeText(getContext(), "Chú ý nhiệt độ bất thường! " + Math.round(x) + " oC", Toast.LENGTH_SHORT).show();
+                Calendar calendar = Calendar.getInstance();
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
+                Alert alert = new Alert(Math.round(x),format.format(calendar.getTime())+"\n");
+
+                /* Send alert to firebase */
+                mRef = db.collection("alert").document(calendar.getTimeInMillis()+"");
+                mRef.set(alert);
             }
             else {
                 edtSpeakerSetting.setProgress(0);
                 ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(0));
+                Toast.makeText(getContext(), "Đã tắt speaker!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -65,12 +79,11 @@ public class SettingFragment extends Fragment {
         edtSpeakerSetting = view.findViewById(R.id.seek_barcustom);
 
         CircularSeekBar seekBar=view.findViewById(R.id.seekbar);
-        seekBar.setProgressTextFormat(new DecimalFormat("###,###,##0.00"));
+        seekBar.setProgressTextFormat(new DecimalFormat("###"));
         seekBar.setRingColor(Color.BLACK);
         seekBar.setOnCenterClickedListener(new CircularSeekBar.OnCenterClickedListener() {
             @Override
             public void onCenterClicked(CircularSeekBar seekBar, float progress) {
-//                seekBar.setProgressTextFormat(new StringFormat());
                 Snackbar.make(seekBar, "Đã tắt tự động điều khiển nhiệt độ và bật điều khiển speaker thủ công!!!",Snackbar.LENGTH_SHORT*5).show();
                 seekBar.setRingColor(Color.BLACK);
                 seekBar.setProgress(0);
@@ -101,7 +114,7 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(CircularSeekBar seekBar) {
-                Snackbar.make(seekBar, "Đã tắt điều khiển speaker thủ công và đặt tự động điều khiển đến nhiệt độ: "+seekBar.getProgress()+"oC",Snackbar.LENGTH_SHORT*5).show();
+                Snackbar.make(seekBar, "Đã tắt điều khiển speaker thủ công và đặt tự động điều khiển đến nhiệt độ: " + Math.round(seekBar.getProgress())+"oC",Snackbar.LENGTH_SHORT*5).show();
                 AutoTemp=seekBar.getProgress();
                 capnhat(realtimeTemp);
             }
@@ -114,8 +127,6 @@ public class SettingFragment extends Fragment {
             @Override
             public void onProgressChanged(SignSeekBar signSeekBar, int progress, float progressFloat,boolean fromUser) {
                 String s = String.format(Locale.CHINA, "onChanged int:%d, float:%.1f", progress, progressFloat);
-//                Snackbar.make(view, s,Snackbar.LENGTH_SHORT).show();
-//                progressText.setText(s);
             }
 
             @Override

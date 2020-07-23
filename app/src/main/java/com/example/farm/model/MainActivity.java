@@ -168,18 +168,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     humidity = Integer.parseInt(valuesArray.getString(1));
                     capnhatnhietdo(temparature);
                     /* Auto turn on Speaker and send notification */
-                    if (temparature > startSpeakerValue) {
-                        Calendar calendar = Calendar.getInstance();
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
-                        Alert alert = new Alert(temparature,format.format(calendar.getTime())+"\n");
-                        sendDataToMQTT("Speaker","1","5000");
-                        Toast.makeText(MainActivity.this, "Chú ý nhiệt độ bất thường! " + String.valueOf(temparature) + " oC", Toast.LENGTH_SHORT).show();
-
-                        /* Send alert to firebase */
-                        mRef = db.collection("alert").document(calendar.getTimeInMillis()+"");
-                        mRef.set(alert);
-
-                    }
+//                    if (temparature > startSpeakerValue) {
+//                        Calendar calendar = Calendar.getInstance();
+//                        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss - dd/MM/yyyy");
+//                        Alert alert = new Alert(temparature,format.format(calendar.getTime())+"\n");
+//                        //sendDataToMQTT("Speaker","1","5000");
+//                        //Toast.makeText(MainActivity.this, "Chú ý nhiệt độ bất thường! " + String.valueOf(temparature) + " oC", Toast.LENGTH_SHORT).show();
+//
+//                        /* Send alert to firebase */
+//                        mRef = db.collection("alert").document(calendar.getTimeInMillis()+"");
+//                        mRef.set(alert);
+//                    }
                 }
             }
             @Override
