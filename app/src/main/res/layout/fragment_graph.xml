@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:fontFamily="sans-serif-medium"
-        android:textColor="#000000"
+        android:textColor="@color/colorPrimaryDark"
         android:text="BIỂU ĐỒ NHIỆT ĐỘ - ĐỘ ẨM"
         android:textSize="25sp"
         android:visibility="visible"
