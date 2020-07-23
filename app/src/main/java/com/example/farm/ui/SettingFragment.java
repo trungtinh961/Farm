@@ -66,7 +66,7 @@ public class SettingFragment extends Fragment {
             else {
                 edtSpeakerSetting.setProgress(0);
                 ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(0));
-                Toast.makeText(getContext(), "Đã tắt speaker!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Đã tắt quạt!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -84,7 +84,7 @@ public class SettingFragment extends Fragment {
         seekBar.setOnCenterClickedListener(new CircularSeekBar.OnCenterClickedListener() {
             @Override
             public void onCenterClicked(CircularSeekBar seekBar, float progress) {
-                Snackbar.make(seekBar, "Đã tắt tự động điều khiển nhiệt độ và bật điều khiển speaker thủ công!!!",Snackbar.LENGTH_SHORT*5).show();
+                Snackbar.make(seekBar, "Đã tắt tự động điều khiển nhiệt độ và bật điều khiển quạt thủ công!!!",Snackbar.LENGTH_SHORT*5).show();
                 seekBar.setRingColor(Color.BLACK);
                 seekBar.setProgress(0);
                 edtSpeakerSetting.setEnabled(true);
@@ -114,7 +114,7 @@ public class SettingFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(CircularSeekBar seekBar) {
-                Snackbar.make(seekBar, "Đã tắt điều khiển speaker thủ công và đặt tự động điều khiển đến nhiệt độ: " + Math.round(seekBar.getProgress())+"oC",Snackbar.LENGTH_SHORT*5).show();
+                Snackbar.make(seekBar, "Đã tắt điều khiển quạt thủ công và đặt tự động điều khiển đến nhiệt độ: " + Math.round(seekBar.getProgress())+"oC",Snackbar.LENGTH_SHORT*5).show();
                 AutoTemp=seekBar.getProgress();
                 capnhat(realtimeTemp);
             }
@@ -133,7 +133,7 @@ public class SettingFragment extends Fragment {
             public void getProgressOnActionUp(SignSeekBar signSeekBar, int progress, float progressFloat) {
                 String s = String.format(Locale.CHINA, "onActionUp int:%d, float:%.1f", progress, progressFloat);
                 ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(progress));
-                Snackbar.make(view, "Đã thiết lập speaker với công suất: " +progress,Snackbar.LENGTH_SHORT*3).show();
+                Snackbar.make(view, "Đã thiết lập quạt với công suất: " +progress,Snackbar.LENGTH_SHORT*3).show();
             }
 
             @Override
