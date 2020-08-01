@@ -20,11 +20,15 @@ public class MQTTHelper {
     public MqttAndroidClient mqttAndroidClient;
 
 //    final String serverUri = "tcp://52.187.125.59:1883"; //server trường
-    final String serverUri = "tcp://52.163.115.85:1883";   //server giả lập
+//    final String serverUri = "tcp://52.163.115.85:1883";   //server giả lập
+    final String serverUri = "tcp://52.230.1.253:1883";//demo cuoi ky
 
     final String clientId = "App_22";
 //    final String subscriptionTopic = "Topic/TempHumi";
 
+//    final String username = "BKvm";
+//    final String password = "Hcmut_CSE_2020";
+    //demo cuoi ky
     final String username = "BKvm";
     final String password = "Hcmut_CSE_2020";
 

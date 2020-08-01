@@ -66,7 +66,7 @@ public class SettingFragment extends Fragment {
             else {
                 edtSpeakerSetting.setProgress(0);
                 ((MainActivity)getActivity()).sendDataToMQTT("Speaker","1", String.valueOf(0));
-                Toast.makeText(getContext(), "Đã tắt quạt!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Đã tắt quạt!", Toast.LENGTH_SHORT).show();
             }
         }
     }
